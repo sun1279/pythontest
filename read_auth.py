@@ -15,7 +15,7 @@ for line in f:
         #print(x[1])
     
 for a in l:
-    print(str(a)[7:-2])
+#    print(str(a)[7:-2])
     f_ip.write((str(a)[7:-2]))
     f_ip.write("\n")
     
