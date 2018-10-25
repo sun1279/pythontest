@@ -72,24 +72,16 @@ for cn,num in list(b.items()):
 
 m.sort(reverse=True)
 for num, cn in m:
-    f_cn.write(str(cn))
+    try:
+    	f_cn.write(str(cn))
+    except:
+    	f_cn.write("Unknown")
     f_cn.write(" ")
     f_cn.write(str(num))
     f_cn.write("\n")
     #print(cn),
     #print(num)
 
-exit()
-print(b)
-for cn, num in l:
-    print(cn),
-    print(num)
-    try:
-    	f_ip.write(str(country))
-    except:
-    	f_ip.write("Unknown")
-
-print "=============================================="
 f_ip.close()
 f_cn.close()
 f.close()
