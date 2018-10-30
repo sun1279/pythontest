@@ -54,7 +54,10 @@ for num, ip in l:
     print(ip)
     print(num)
     f_ip.write(str(ip))
-    f_ip.write(" ")
+    i=len(str(ip))
+    while i < 20:
+        f_ip.write(" ")
+        i+=1
     f_ip.write(str(num))
     f_ip.write("\n")
     
@@ -77,10 +80,14 @@ for num, cn in m:
 #    except:
 #    	f_cn.write("Unknown")
     f_cn.write(cn.encode('utf8'))#some names of country not encode well
-#    print(cn.encode('utf8'))
-    f_cn.write(" ")
+    l=len(cn.encode('utf8'))
+    print(cn.encode('utf8'))
+    i = l
+    while i < 20:
+        f_cn.write(" ")
+        i+=1
     f_cn.write(str(num))
-#    print(str(num))
+    print(str(num))
     f_cn.write("\n")
     #print(cn),
     #print(num)
