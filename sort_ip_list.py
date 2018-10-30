@@ -10,7 +10,7 @@ import json
 def ip_to_country(ip):
     y = {}
     x = {}
-    for y in urllib2.urlopen(ip):
+    for y in urllib2.urlopen(ip,timeout=1):#on some machine, timeout=1 is a must or it will stop here
         pass
     x = json.loads(y)
 #    print x
@@ -77,8 +77,10 @@ for num, cn in m:
 #    except:
 #    	f_cn.write("Unknown")
     f_cn.write(cn.encode('utf8'))#some names of country not encode well
+#    print(cn.encode('utf8'))
     f_cn.write(" ")
     f_cn.write(str(num))
+#    print(str(num))
     f_cn.write("\n")
     #print(cn),
     #print(num)
