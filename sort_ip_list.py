@@ -72,10 +72,11 @@ for cn,num in list(b.items()):
 
 m.sort(reverse=True)
 for num, cn in m:
-    try:
-    	f_cn.write(str(cn))
-    except:
-    	f_cn.write("Unknown")
+#    try:
+#    	f_cn.write(str(cn))
+#    except:
+#    	f_cn.write("Unknown")
+    f_cn.write(cn.encode('utf8'))#some names of country not encode well
     f_cn.write(" ")
     f_cn.write(str(num))
     f_cn.write("\n")
