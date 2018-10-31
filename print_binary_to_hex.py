@@ -1,3 +1,4 @@
+#read a binary file, then print the data
 i = 0
 with open("BF260000_256.mem","rb") as f:
     byte = 'a'
