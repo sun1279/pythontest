@@ -37,12 +37,19 @@ def SUN_get_donamin_name(input_url):
 
 request_headers = {
         "Accept-Language": "en-US,en;q=0.5",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/58.0",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/59.0",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
         "Referer": "http://cworld.info",#where to come
         "Connection": "keep-alive" 
         }
 
+proxies1={'http':'http://119.101.113.126:9999'}
+proxies = ['http://119.101.113.126:9999',
+          'http://75.128.59.155:80',
+          'http://74.84.255.88:53281',
+          'http://76.76.76.74:53281',
+          'http://96.80.89.69:8080',
+        ]
 
 def SUN_find_all_the_link(url1,d_name):
     if url1.endswith("jpg") or url1.endswith("png"):
@@ -86,6 +93,9 @@ def SUN_find_all_the_link(url1,d_name):
         else:
             SUN_find_all_the_link(d_link,d_name)
 
+proxy_support = urllib.request.ProxyHandler(proxies1)
+opener = urllib.request.build_opener(proxy_support)
+urllib.request.install_opener(opener)
 
 SUN_find_all_the_link(URL_163, SUN_get_donamin_name(URL_163))
 
