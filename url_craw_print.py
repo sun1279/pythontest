@@ -9,7 +9,7 @@ ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 
 #url = input('Enter - ')
-URL = "http://www.cworld.info"
+URL = "http://www.sunjw.cn"
 URL_163 = "http://sunjw.cn"
 #url = "http://www.163.com"
 #html = urllib.request.urlopen(url).read()
@@ -35,6 +35,14 @@ def SUN_get_donamin_name(input_url):
         domain_name=re.findall('\/\/(.*)\S*',input_url)
         return domain_name[0]
 
+request_headers = {
+        "Accept-Language": "en-US,en;q=0.5",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/58.0",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Referer": "http://cworld.info",#where to come
+        "Connection": "keep-alive" 
+        }
+
 
 def SUN_find_all_the_link(url1,d_name):
     if url1.endswith("jpg") or url1.endswith("png"):
@@ -52,7 +60,8 @@ def SUN_find_all_the_link(url1,d_name):
     else:
         return
     try:
-        html = urllib.request.urlopen(url1).read()
+        request = urllib.request.Request(URL,headers=request_headers)
+        html = urllib.request.urlopen(request).read()
     except:
         print("error")
         return
@@ -78,7 +87,7 @@ def SUN_find_all_the_link(url1,d_name):
             SUN_find_all_the_link(d_link,d_name)
 
 
-SUN_find_all_the_link(URL, SUN_get_donamin_name(URL))
+SUN_find_all_the_link(URL_163, SUN_get_donamin_name(URL_163))
 
 def SUN_download_file_jpg(jpg_url, jpg_name):
     img=urllib.request.urlopen(jpg_url).read()
