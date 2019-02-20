@@ -54,6 +54,7 @@ str1=str(s2[0])[:3]
 l2=str(s2[0])[9:].split('</span>')
 str2=l2[0]+ ' ' +l2[1]
 print(str2)
+#on some cases, we can not get the real ip address we are using, NOT sure proxy is used correctly
 if l2[0] != get_orig_ip(URL):
-    print("ERROR, Using Proxy Faild!!!")
+    print("Using Proxy Failed")
 
