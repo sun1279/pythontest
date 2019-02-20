@@ -1,15 +1,23 @@
-#print all the links inside the given website
-#there is no delay between each url request,so this cannot be used in some website
 import urllib.request, urllib.parse, urllib.error
+import tweepy
+import time
 import re
 import ssl
 # Ignore SSL certificate errors
 ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
+URL='http://www.cworld.info'
+CONSUMER_KEY = 'X3WVQX5OojiTF6MDE9GWWdQih'
+CONSUMER_SECRET = 'EQyUQebeWAxyeOBYuSsB3OUQn8KCg1Nz8q2Wzjq8QvSfnzis7S'
+ACCESS_KEY = '161683541-4h6hRODBIIc0xMXzaSKiRbyDW6lh8VOOAWNFnOvG'
+ACCESS_SECRET = 'C5Q8TlkN0TxXBT9oo8g3dKwoVORiqUFDgIgaRKIWdS5XS'
+auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
+api = tweepy.API(auth)
 
 #url = input('Enter - ')
-URL = "http://www.sunjw.cn"
+URL = "http://www.cworld.info"
 URL_163 = "http://sunjw.cn"
 #url = "http://www.163.com"
 #html = urllib.request.urlopen(url).read()
@@ -35,21 +43,6 @@ def SUN_get_donamin_name(input_url):
         domain_name=re.findall('\/\/(.*)\S*',input_url)
         return domain_name[0]
 
-request_headers = {
-        "Accept-Language": "en-US,en;q=0.5",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/59.0",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "Referer": "http://cworld.info",#where to come
-        "Connection": "keep-alive" 
-        }
-
-proxies1={'http':'http://119.101.113.126:9999'}
-proxies = ['http://119.101.113.126:9999',
-          'http://75.128.59.155:80',
-          'http://74.84.255.88:53281',
-          'http://76.76.76.74:53281',
-          'http://96.80.89.69:8080',
-        ]
 
 def SUN_find_all_the_link(url1,d_name):
     if url1.endswith("jpg") or url1.endswith("png"):
@@ -67,8 +60,7 @@ def SUN_find_all_the_link(url1,d_name):
     else:
         return
     try:
-        request = urllib.request.Request(URL,headers=request_headers)
-        html = urllib.request.urlopen(request).read()
+        html = urllib.request.urlopen(url1).read()
     except:
         print("error")
         return
@@ -93,11 +85,8 @@ def SUN_find_all_the_link(url1,d_name):
         else:
             SUN_find_all_the_link(d_link,d_name)
 
-proxy_support = urllib.request.ProxyHandler(proxies1)
-opener = urllib.request.build_opener(proxy_support)
-urllib.request.install_opener(opener)
 
-SUN_find_all_the_link(URL_163, SUN_get_donamin_name(URL_163))
+SUN_find_all_the_link(URL, SUN_get_donamin_name(URL))
 
 def SUN_download_file_jpg(jpg_url, jpg_name):
     img=urllib.request.urlopen(jpg_url).read()
@@ -109,4 +98,58 @@ def SUN_get_download_name(url):
     name=re.findall('\S*\/(.*jp\S*g)',url)
     return name[0]
 
-exit()
+l_file_name=list()
+l_title=list()
+l_url=list()
+for a in url_done:
+    if "wp-login" in a:
+        continue
+    if "wp-content" in a:
+        continue
+    if "category" in a:
+        continue
+    if "index.php" not in a:
+        continue
+    if "feed" in a:
+        continue
+    if "root" in a:
+        continue
+    if "page" in a:
+        continue
+    if "about-me" in a:
+        continue
+    #print(a)
+    try:
+        html=urllib.request.urlopen(a).readlines()
+    except:
+        print("url error")
+        continue
+    l_url.append(a)
+    a=0
+    for line in html:
+        try:
+            line=line.decode('utf-8')
+        except:
+            pass
+        if "entry-title" in line:
+            s=re.findall('(\[.*)<\/\S*',line)
+            #print(s)
+            if 'English' in s[0]:
+                l_url.pop()
+                continue
+            l_title.append(s[0])
+            continue
+        else:
+            if "alignnone" in line:
+                s=re.findall('\S*src=\"(.*.jp\S*g)\S',line)
+                l_file_name.append(SUN_get_download_name(s[0]))
+                SUN_download_file_jpg(s[0],SUN_get_download_name(s[0]))
+
+if len(l_url) == len(l_title) and len(l_title) == len(l_file_name):
+    print("==================================")
+cnt=0    
+while cnt < len(l_url):
+    txt=l_title[cnt]+'   '+l_url[cnt]
+    api.update_with_media(l_file_name[cnt],status=txt)
+    cnt+=1
+
