@@ -1,5 +1,8 @@
+#save every weibo post as a file
+
 #this case is used to carw my WEIBO content
 #including Text/repost/images/videos/location
+import random
 import requests
 import re
 import shutil 
@@ -8,11 +11,8 @@ import json
 import os
 
 
-#URL='http://103.230.35.222:3128'
-#S_URL='https://103.230.35.222:3128'#must add this cause most of the website are using https
 URL='http://103.230.35.222:3128'
 S_URL='https://103.230.35.222:3128'#must add this cause most of the website are using https
-#61.178.238.122:63000
 
 URL1='62.152.43.152:8080'
 S_URL1='62.152.43.152:8080'
@@ -20,14 +20,12 @@ URL2='43.243.165.206:3128'
 S_URL2='43.243.165.206:3128'
 URL3='77.59.248.61:8080'
 S_URL3='77.59.248.61:8080'
-URL4='182.23.38.138:8080'
-S_URL4='182.23.38.138:8080'
+URL4=URL3
+S_URL4=S_URL3
 URL5='139.255.123.186:8080'
 S_URL5='139.255.123.186:8080'
 URL6='202.138.243.8:8080'
 S_URL6='202.138.243.8:8080'
-#URL7='http://122.54.20.216:8090'
-#S_URL7='https://122.54.20.216:8090'
 MAX_PAGE=1000
 
 proxies1={
@@ -44,8 +42,6 @@ proxy_pool={
         0:{'http': URL6, 'https': S_URL6},
         }
 
-#URL='http://103.230.35.222:3128'
-#S_URL='https://103.230.35.222:3128'#must add this cause most of the website are using https
 A_URL='https://m.weibo.cn/status/'
 headers = {
     'Referer': 'https://m.weibo.cn',
@@ -65,6 +61,7 @@ url_param={
 
 ID_FILE_NAME='WEIBO_ID.txt'
 FILE_DICT_PRE='WEIBO_Page_'
+ID_DICT_PRE='ID_'
 
 l=list()
 l_pic=list()
@@ -122,9 +119,13 @@ except:
 need_sleep=1
 page=1
 Screen_Name=''
+first_cnt=0
 for page in range(1, MAX_PAGE):
     i = 0
+    #use id of the 1st weibo of every page as saved page file name
+    # If we just want to backup once, we should use this.otherwise always get the newest WEIBO from server
     #if not downloaded  yet, download from weibo
+    '''
     if check_file_exists(FILE_DICT_PRE+str(page)) is False:
         print("FILE not EXISTs")
         response=requests.get(url_prefix+str(page), proxies=proxies1, headers=headers)
@@ -137,8 +138,23 @@ for page in range(1, MAX_PAGE):
         #print("FILE EXISTs")
         wb_dict = get_wb_from_file(FILE_DICT_PRE+str(page))
         need_sleep = 0
-    #print(wb)
+        '''
+
+    #always see server first
+    response=requests.get(url_prefix+str(page), proxies=proxies1, headers=headers)
+    wb_dict=response.json()
+
     wb=wb_dict
+    #check latest ID to see continue or not, only check once
+    if wb.get('ok') is not 0:
+        newest_id = wb.get('data').get('cards')[0].get('mblog').get('id')
+        if check_file_exists(ID_DICT_PRE+str(newest_id)+'.txt') is True:
+            print(str(newest_id))
+            print("Back up already newest")
+            exit()
+        else:
+            pass
+
     if 0 == wb.get('ok'):
         print("URL error or Back Up Finished!!!")
         if image_failed_list:
@@ -165,6 +181,15 @@ for page in range(1, MAX_PAGE):
         #if not saved, save the text id this time
         else:
             pass
+
+        newest_id = wb.get('data').get('cards')[i].get('mblog').get('id')
+        if check_file_exists(ID_DICT_PRE+str(newest_id)+'.txt') is True:
+            if image_failed_list:
+                print("The Following images should be downloaded again")
+                print(image_failed_list)
+            print("Back up finished")
+            exit()
+
         created_at=wb.get('data').get('cards')[i].get('mblog').get('created_at')
         print(created_at)
         if '全文' in wb.get('data').get('cards')[i].get('mblog').get('text'):
@@ -228,6 +253,7 @@ for page in range(1, MAX_PAGE):
 
                 print('DownLoading video.... ', end='')
                 print(video_url)
+                image_name=str_id+'.mp4'
                 if check_file_exists(image_name) is True:
                     pass
                 else:
@@ -262,12 +288,12 @@ for page in range(1, MAX_PAGE):
             Location=re.findall('\S+surl-text\">(.*)\<\/span', L_str[Lo_cnt])
             print("Location")
             print(Location)
+        #save ID and save every weibo of every id
         save_id_to_file(ID_FILE_NAME, str_id)
+        save_wb_to_file(wb.get('data').get('cards')[i].get('mblog'), ID_DICT_PRE+str(str_id)+'.txt')
         i+=1
         j=0
         total_weibo_cnt+=1
-    #save dict last in case we were not done the first time and then download again
-    save_wb_to_file(wb_dict, FILE_DICT_PRE+str(page))
     page+=1
     if need_sleep is 1:
         time.sleep(40)
