@@ -1,6 +1,35 @@
 import json
 import requests
 import sys
+import random
+
+URL='http://103.230.35.222:3128'
+S_URL='https://103.230.35.222:3128'#must add this cause most of the website are using https
+
+URL1='62.152.43.152:8080'
+S_URL1='62.152.43.152:8080'
+URL2='43.243.165.206:3128'
+S_URL2='43.243.165.206:3128'
+URL3='77.59.248.61:8080'
+S_URL3='77.59.248.61:8080'
+URL4=URL3
+S_URL4=S_URL3
+URL5='139.255.123.186:8080'
+S_URL5='139.255.123.186:8080'
+URL6='202.138.243.8:8080'
+S_URL6='202.138.243.8:8080'
+
+proxy_pool={
+        6:{'http': URL2, 'https': S_URL2},
+        5:{'http': URL1, 'https': S_URL1},
+        4:{'http': URL2, 'https': S_URL2},
+        3:{'http': URL3, 'https': S_URL3},
+        2:{'http': URL4, 'https': S_URL4},
+        1:{'http': URL5, 'https': S_URL5},
+        0:{'http': URL6, 'https': S_URL6},
+        }
+
+
 headers = {
     'origin': 'https://m.ctrip.com',
     'content-type': 'application/json',
@@ -36,28 +65,40 @@ for addr in ADDR:
             code_name.update({name:code})
 
 
-if cmd_len is not 3:
-    print('Usage: python3 air_test.py 青岛 北京 ')
+print(code_name)
+if cmd_len is not 4:
+    print('Usage: python3 air_test.py 青岛 北京 0/1')
     exit()
 print(sys.argv[1], end='-')
 print(sys.argv[2], end=' ')
 DepCity=code_name.get(sys.argv[1])
 ArrCity=code_name.get(sys.argv[2])
-#Date=sys.argv[3]
-print(DepCity)
-print(ArrCity)
-#print(Date)
+Sort=sys.argv[3]
+print(DepCity, end=' ')
+print(ArrCity, end=' ')
+Sort=int(Sort)
 
 
 p={"stype":1,"dCty":DepCity,"aCty":ArrCity,"flag":'',"start":"","end":"","head":{"cid":"","ctok":"","cver":"1.0","lang":"01","sid":"8888","syscode":"09","auth":'',"extension":[{"name":"aid","value":"66672"},{"name":"sid","value":"1693366"},{"name":"protocal","value":"https"}]},"contentType":"json"}
 #r=requests.post('https://m.ctrip.com/restapi/soa2/14022/flightListSearch?_fxpcqlniredt=09031046111774300258', data=json.dumps(p), headers=headers)
-r=requests.post('https://m.ctrip.com/restapi/flight/html5/swift/getLowestPriceCalendar?', data=json.dumps(p),headers=headers)
-wb=r.json()
-print(wb)
+serv_id = random.randint(0,6)
+#r=requests.post('https://m.ctrip.com/restapi/flight/html5/swift/getLowestPriceCalendar?', data=json.dumps(p),headers=headers, proxies=proxy_pool.get(serv_id%6))
+#wb=r.json()
+#save_wb_to_file(wb, "wb.txt")
+wb=get_wb_from_file('wb.txt')
+#print(wb)
 ls=wb['prices']
+price_d=dict()
 for l in ls:
-    print(l.get('airname'),end=' ')
-    print(l.get('flightNo'),end=' ')
-    print(l.get('dDate'),end=' ')
-    print(l.get('dweek'),end=' ')
-    print(l.get('price'))
+    if Sort is 0:
+        print(l.get('airname'),end='  ')
+        print(l.get('flightNo').ljust(7),end='  ')
+        print(l.get('dDate'),end='   ')
+        print(l.get('dweek'),end=' ')
+        print(l.get('price'))
+    price_d[l.get('airname')+'  '+l.get('flightNo').ljust(6) + '   '+l.get('dDate')+'   '+l.get('dweek') ]=l.get('price')
+    
+
+if Sort is not 0:
+    for w in sorted(price_d, key=price_d.get):
+        print (w, price_d[w])
