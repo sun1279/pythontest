@@ -13,8 +13,17 @@ headers = {
         }
 r = session.get('https://www.xicidaili.com/nt/', proxies=proxies1, headers=headers)
 t=r.html
-o=t.find('.odd')
+o=t.find('tr')
+iplist=list()
 for i in o:
-    print(i.html.split('<td>')[1].split('</td>')[0],end=':')
-    print(i.html.split('<td>')[2].split('</td>')[0])
+    if '时间' not in i.html:
+        iplist.append(i.html.split('<td>')[1].split('</td>')[0]+':'+i.html.split('<td>')[2].split('</td>')[0])
+        #print(i.html.split('<td>')[1].split('</td>')[0],end=':')
+        #print(i.html.split('<td>')[2].split('</td>')[0])
+
+with open('proxy_list.txt','w+') as fd:
+    for ip in iplist:
+        fd.write(ip+'\n')
+
+print("Ip list saved to proxy_list.txt")
 
