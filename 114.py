@@ -12,8 +12,7 @@ headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
         'X-Requested-With': 'XMLHttpRequest',
         }
-URL='http://114.hisense.com/smtel/search/listview.do?depnum=hisense'
-URL_PRE='http://114.hisense.com/smtel/search/listview.do?depnum='
+URL_PRE=''
 
 session = HTMLSession()
 
@@ -31,8 +30,8 @@ def get_dep_only_info(r):
             print()
             fd.write('\n')
             str_tmp=re.findall('\'(.*)\'', js[i].html)[0]
-            print(str_tmp+'@hisense.com', end=' ')#username
-            fd.write(str_tmp+'@hisense.com,')
+            print(str_tmp+'@.com', end=' ')#username
+            fd.write(str_tmp+'@.com,')
         print(js[i].text,end=' ')
         fd.write(js[i].text+',')
     print()
@@ -75,8 +74,8 @@ def get_dep_info(depname):
                         print()
                         fd.write('\n')
                         str_tmp=re.findall('\'(.*)\'', q.html)[0]
-                        fd.write(str_tmp+'@hisense.com'+',')
-                        print(str_tmp+'@hisense.com', end=' ')#username
+                        fd.write(str_tmp+'@.com'+',')
+                        print(str_tmp+'@.com', end=' ')#username
                     print(q.text,end=' ')
                     fd.write(q.text+',')
                 cnt+=1
