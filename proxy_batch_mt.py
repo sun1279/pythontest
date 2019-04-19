@@ -28,7 +28,7 @@ def check_proxy(ip):
     'https': S_URL,
     }
     try:
-        t=requests.get(BAIDU, proxies=proxies1, headers=headers,timeout=25)
+        t=requests.get(BAIDU, proxies=proxies1, headers=headers,timeout=18)
         if t.status_code is 200:
             OKlist.append(ip)
             print(ip+'  OK')
@@ -43,31 +43,50 @@ def check_proxy_list(IpList):
         check_proxy(ip)
     
 
-ThreadNum=20
+ThreadNum=15
 
-def get_proxy_list_by_threadnum(IpList, threadnum, cur_num):
+
+'''This function saperates the Total ip list to several small lists based on number of threads'''
+#param1 list of all the ips
+#param2 No. of thread left
+#param3 current lenth of Iplist
+def get_proxy_list_by_threadnum(IpList, threadnum, cur_len):
     i=0
-    l=len(IpList)
     l1=list()
-    cur=cur_num*(l/threadnum)
-    #print("cur {}".format(cur))
-    #print("cur {}".format(cur+(l/threadnum)))
-    for ip in IpList:
-        if i < cur:
+    #if there is only one thread
+    if threadnum is 1:
+        return IpList
+    else:
+        cur=cur_len//threadnum
+        for ip in IpList:
+            if i < cur:
+                l1.append(ip)
+                Iplist.remove(ip)
             i+=1
-            continue
-        if i < (cur+(l/threadnum)):
-            l1.append(ip)
-        i+=1
+
     return l1
 
 with open('proxy_list.txt') as fd:
         Iplist=fd.read()
 Iplist=Iplist.split('\n')
 
+llen=len(Iplist)
+#in case there in empty element in the list
+if not Iplist[llen-1]:
+    Iplist.pop(llen-1)
+
 threads=list()
+#remove duplicates from original list
+Iplist=list(set(Iplist))
+
+#see if Thread number is larger than Ip number
+if len(Iplist) < ThreadNum:
+    ThreadNum=len(Iplist)
+
+i=0
 for j in range(ThreadNum):
-    iplist=get_proxy_list_by_threadnum(Iplist, ThreadNum, j)
+    llen=len(Iplist)
+    iplist=get_proxy_list_by_threadnum(Iplist, ThreadNum-j, llen)
     t=threading.Thread(target=check_proxy_list, args=(iplist,))
     threads.append(t)
     t.start()
