@@ -11,9 +11,9 @@ POP_SERVER = "pop.163.com"
 SMTP_SERVER = "smtp.163.com"
 IMAP_SERVER = "imap.163.com"
 
-SENDER = "15853259039@163.com"
-RECEIVER = "266211@163.com"
-PASSWD = "sunjin1279"
+SENDER = "@163.com"
+RECEIVER = "@163.com"
+PASSWD = ""
 
 title = "[以此邮件为准]HELLO WORLD"
 content = "今天 Hi there, nice to meeto you \nAn SMTP object has an instance method called sendmail, which is typically used to do the work of mailing a message. It takes three parameters \n"
@@ -36,7 +36,8 @@ smtp.login(SENDER, PASSWD)
 
 #mail with attachment
 msg = MIMEMultipart()
-msg["Subject"] = Header(title, "utf-8")
+msg["Subject"] = Header(title)
+#msg["Subject"] = Header(title, "utf-8")
 msg["From"] = SENDER
 msg["To"] = RECEIVER
 msg.attach(MIMEText(content, "html", "utf-8"))
