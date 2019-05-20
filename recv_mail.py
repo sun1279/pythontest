@@ -20,10 +20,10 @@ totalnum, totalsize=pop.stat()
 #Request message list, result is in the form (response, ['mesg_num octets', ...], octets). If which is set, it is the message to list.
 
 rsp, msg_list, rsp_siz = pop.list()
-rsp, msglines, msgsiz = pop.retr(totalnum)
+rsp, msglines, msgsiz = pop.retr(totalnum-2)
 msg_content = b'\r\n'.join(msglines).decode('gbk')
 msg = Parser().parsestr(text=msg_content)
-print(msg)
+#print(msg)
 
 
 #ONLY TEXT or with attachment
@@ -46,13 +46,20 @@ if msg.is_multipart():
         #type1, _ = payload.get_params()[0]
         type1 = payload.get_content_type()
         if type1 == 'text/html' or type1 == 'text/plain' or type1 == 'multipart/alternative':#get_content_type()
-            charset = payload.get_payload()[0].get_charsets()[0]
-            content = payload.get_payload()[0].get_payload(decode=True)
+            if len(payload.get_payload()) == 2:
+                charset = payload.get_payload()[0].get_charsets()[0]
+                content = payload.get_payload()[0].get_payload(decode=True)
+            else:
+                print(len(payload.get_payload()[0]))
+                charset = payload.get_charsets()[0]
+                content = payload.get_payload(decode=True)
+
             content=content.decode(charset)
             print("Content:======================\n{}".format(content))
             print("==============================")
         else:#type1 is 'text/base64':#attachment / or msg.get_payload()[2].get_content_disposition()
-            name = payload.items()[-1][1].split('filename=')[1][1:-1]
+            name=payload.get_filename()
+            print(name)
             data = payload.get_payload(decode=True)
             with open(name,'wb') as fd:
                 fd.write(data)
