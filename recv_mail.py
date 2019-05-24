@@ -2,6 +2,7 @@ import poplib
 from email.parser import Parser
 from email.header import decode_header
 import time
+from str_encrypt import MyEncrypt
 
 POP_SERVER = "pop.163.com"
 SMTP_SERVER = "smtp.163.com"
@@ -122,6 +123,59 @@ class GetMsgInfo(object):
                 content=self.__msg__.get_payload()
         return content
         
+if __name__ == '__main__':
+    en = MyEncrypt()
+    key1 = time.gmtime().tm_mon
+    key2 = time.gmtime().tm_mday
+    orig="http://www.baidu.com"
+    s1 = en.encrypt(key1, orig)
+    s1 = en.encrypt(key2, s1)
+    
+    s2 = en.decrypt(key2, s1)
+    s2 = en.decrypt(key1, s2)
+    print(s1)
+    print(s2)
+    exit()
+
+def ProcessCmd(cmd):
+    cmd_id = cmd.split()[0]
+    cmd_len = len(cmd.split())
+    if cmd_id == 'URL'
+        url = cmd.split()[1]
+        key1 = time.gmtime().tm_mon
+        key2 = time.gmtime().tm_mday
+        s2 = en.decrypt(key2, url)
+        url = en.decrypt(key1, s2)
+        #TODO  process URL
+    elif cmd_id == 'TTHOME':
+        cnt = 0
+        if len == 2:# 3rd param defines the coun
+            try:
+                cnt = int(cmd.split()[1])
+            except:
+                cnt = 20
+        else:#default 20
+            cnt = 20
+
+
+
+    elif cmd_id == 'TTUSER':
+        cnt = 0
+        if len == 3:# 3rd param defines the coun
+            try:
+                cnt = int(cmd.split()[2])
+            except:
+                cnt = 20
+        else:#default 20
+            cnt = 20
+        usr = cmd.split()[1]
+
+    elif cmd_id == 'TTSEND':#pure text
+        text = cmd.split()[1]
+
+    elif cmd_id == 'TTSEND1':#with pic
+        text = cmd.split()[1]
+    
 mail = MailCheck()
 #print(mail)
 msg = mail.get_latest_mail()
@@ -130,6 +184,5 @@ for m in msg:
     print(c.get_sender())
     print(c.get_date())
     print(c.get_subject())
-    #print(c.get_content())
     print(c.is_attachment())
     print(c.download_attach())
