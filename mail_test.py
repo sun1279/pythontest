@@ -7,6 +7,8 @@ from email.mime.text import MIMEText
 from email.header import Header
 from email.mime.multipart import MIMEMultipart
 
+#POP_SERVER = "pop.gmail.com"
+#SMTP_SERVER = "smtp.gmail.com"
 POP_SERVER = "pop.163.com"
 SMTP_SERVER = "smtp.163.com"
 IMAP_SERVER = "imap.163.com"

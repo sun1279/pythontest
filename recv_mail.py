@@ -4,6 +4,8 @@ from email.header import decode_header
 import time
 from str_encrypt import MyEncrypt
 
+#POP_SERVER = "pop.gmail.com"
+#SMTP_SERVER = "smtp.gmail.com"
 POP_SERVER = "pop.163.com"
 SMTP_SERVER = "smtp.163.com"
 IMAP_SERVER = "imap.163.com"
@@ -18,7 +20,8 @@ class MailCheck(object):
         pass
 
     def get_latest_mail(self, num=1):
-        pop = poplib.POP3(POP_SERVER)
+        pop = poplib.POP3(POP_SERVER)#163
+        #pop = poplib.POP3_SSL(POP_SERVER,port=995) #Gmail
         #pop.set_debuglevel(1)
         #greeting=pop.getwelcome()
         #print(greeting)
