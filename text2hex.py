@@ -10,13 +10,13 @@ try:
 except:
     print("Open file ({}) failed".format(sys.argv[1]))
     exit()
-all=list()
+all_data=list()
 for i in l.split(','):
     try:
-        all.append(int(i,16))
+        all_data.append(int(i,16))
     except:
         pass
 
 with open(sys.argv[2], 'wb') as fd:
-    fd.write(bytearray(all))
+    fd.write(bytearray(all_data))
 
