@@ -8,8 +8,8 @@ import os
 
 #URL='http://103.230.35.222:3128'
 #S_URL='https://103.230.35.222:3128'#must add this cause most of the website are using https
-URL='http://103.230.35.222:3128'
-S_URL='https://103.230.35.222:3128'#must add this cause most of the website are using https
+URL='http://123.139.56.238:9999'
+S_URL='https://123.139.56.238:9999'#mhust add this cause most of the website are using https
 
 URL1='62.152.43.152:8080'
 S_URL1='62.152.43.152:8080'
@@ -32,13 +32,13 @@ proxies1={
 'https': S_URL,
 }
 proxy_pool={
-        6:{'http': URL2, 'https': S_URL2},
-        5:{'http': URL1, 'https': S_URL1},
-        4:{'http': URL2, 'https': S_URL2},
-        3:{'http': URL3, 'https': S_URL3},
-        2:{'http': URL4, 'https': S_URL4},
-        1:{'http': URL5, 'https': S_URL5},
-        0:{'http': URL6, 'https': S_URL6},
+        6:{'http': URL, 'https': S_URL},
+        5:{'http': URL, 'https': S_URL},
+        4:{'http': URL, 'https': S_URL},
+        3:{'http': URL, 'https': S_URL},
+        2:{'http': URL, 'https': S_URL},
+        1:{'http': URL, 'https': S_URL},
+        0:{'http': URL, 'https': S_URL},
         }
 
 #URL='http://103.230.35.222:3128'
@@ -78,6 +78,8 @@ def download_wb_image(image_url,filename, serv_id=1):
             shutil.copyfileobj(r.raw, fd)
     except:
         print("download Image Error, server id:{}".format(serv_id%7))
+        with open('image_err_url.txt', 'a+') as fd:
+            fd.write(image_url+' '+filename+'\n')
         image_failed_list.update({filename:image_url})
 
 #when there is to many characters in one post,  we must expand the url the craw the FULL text
@@ -145,7 +147,8 @@ for page in range(1, MAX_PAGE):
             print(image_failed_list)
         break
     if page == 1:
-        Screen_Name=wb.get('data').get('cards')[0].get('mblog').get('user').get('screen_name')
+        #Screen_Name=wb.get('data').get('cards')[0].get('mblog').get('user').get('screen_name')
+        Screen_Name=wb.get('data').get('cards')[1].get('mblog').get('user').get('screen_name')#they changed it?
     for l in wb.get('data').get('cards'):
         print("==================================================================================")
         #print Normal Text Message
@@ -236,7 +239,11 @@ for page in range(1, MAX_PAGE):
         retweet=wb.get('data').get('cards')[i].get('mblog').get('retweeted_status')
         if retweet:
             print("UserName:", end='')
-            print(wb.get('data').get('cards')[i].get('mblog').get('retweeted_status').get('user').get('screen_name'))
+            #in case some users deleted or hide the origianl post after a certain time
+            if wb.get('data').get('cards')[i].get('mblog').get('retweeted_status').get('user') is not None:
+                print(wb.get('data').get('cards')[i].get('mblog').get('retweeted_status').get('user').get('screen_name'))
+            else:
+                print("User deleted or hiding")
             print("Orig Posted Date:", end='')
             print(wb.get('data').get('cards')[i].get('mblog').get('retweeted_status').get('created_at'))        
             retweet_text=wb.get('data').get('cards')[i].get('mblog').get('retweeted_status').get('text')
