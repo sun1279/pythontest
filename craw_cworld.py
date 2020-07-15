@@ -1,11 +1,6 @@
 #craw my blog using request_html
 from requests_html import HTMLSession
 session = HTMLSession()
-proxies1={
-        'http': '103.230.35.222:3128',
-        'https':'103.230.35.222:3128',
-}
-
 headers = {
     'Referer': 'https://www.baidu.com',
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
@@ -17,7 +12,7 @@ page_num=1
 URL_PRE='https://www.cworld.info/index.php/page/'
 
 while True:
-    r = session.get(URL_PRE+str(page_num), proxies=proxies1,headers=headers)
+    r = session.get(URL_PRE+str(page_num), headers=headers)
     #r = session.get('https://www.cworld.info/index.php/page/2')
     q=r.html
     ps=q.find('.post')#see html source file and find some classes,this finds all the articles

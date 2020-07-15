@@ -1,7 +1,7 @@
 import sys
 import os
 l=len(sys.argv)
-if l is not 3:
+if l != 3:
     print("Usage: python3 hex2text input.bin output.h")
     exit()
 

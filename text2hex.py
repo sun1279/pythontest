@@ -1,6 +1,6 @@
 import sys
 l=len(sys.argv)
-if l is not 3:
+if l != 3:
     print("Usage: python3 text2hex.py input.h output.bin")
     exit()
 
