@@ -129,7 +129,7 @@ def PrintUsage(fname):
     print('       python3 {} -R 青岛(random destnation low price)'.format(sys.argv[0]))
 
 #print(code_name)
-if cmd_len is not 4 and cmd_len is not 3 and cmd_len is not 5:
+if cmd_len != 4 and cmd_len != 3 and cmd_len != 5:
     PrintUsage(sys.argv[0])
     exit()
 
@@ -137,13 +137,13 @@ if not sys.argv[1].startswith('-'):
     PrintUsage(sys.argv[0])
     exit()
 else:
-    if len(sys.argv[1]) is not 2:
+    if len(sys.argv[1]) != 2:
         PrintUsage(sys.argv[0])
         exit()
 
 Option=sys.argv[1][1:]
-if Option is 'A':
-    if cmd_len is 4:
+if Option == 'A':
+    if cmd_len == 4:
         print(sys.argv[2], end='-')
         print(sys.argv[3])
         DepCity=code_name.get(sys.argv[2])
@@ -162,8 +162,8 @@ if Option is 'A':
         PrintUsage(sys.argv[0])
         exit()
 
-elif Option is 'D':
-    if cmd_len is 5:
+elif Option == 'D':
+    if cmd_len == 5:
         print(sys.argv[2], end='-')
         print(sys.argv[3])
         DepCity=code_name.get(sys.argv[2])
@@ -177,13 +177,13 @@ elif Option is 'D':
             print("到达城市输入错误")
             PrintUsage(sys.argv[0])
             exit()
-        if len(Date) is not 10:
+        if len(Date) != 10:
             print("日期输入错误")
             PrintUsage(sys.argv[0])
             exit()
         else:
             _data=Date.split('-')
-            if len(_data) is not 3:
+            if len(_data) != 3:
                 print("日期输入错误")
                 PrintUsage(sys.argv[0])
                 exit()
@@ -192,8 +192,8 @@ elif Option is 'D':
     else:
         PrintUsage(sys.argv[0])
         exit()
-elif Option is 'R':
-    if cmd_len is 3:
+elif Option == 'R':
+    if cmd_len == 3:
         print(sys.argv[2], end='-')
         DepCity=code_name.get(sys.argv[2])
         if not DepCity:

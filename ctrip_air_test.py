@@ -35,7 +35,8 @@ for addr in ADDR:
             code_name.update({name:code})
 
 
-if cmd_len is not 4:
+print(code_name)
+if cmd_len != 4:
     print('Usage: python3 air_test.py 青岛 北京 2019-05-12')
     exit()
 print(sys.argv[1], end='-')

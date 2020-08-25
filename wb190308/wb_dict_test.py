@@ -129,7 +129,7 @@ for page in range(1, MAX_PAGE):
         response=requests.get(url_prefix+str(page), proxies=proxies1, headers=headers)
         print(url_prefix+str(page))
         wb_dict=response.json()
-        print(wb_dict)
+        #print(wb_dict)
         need_sleep = 1
         del response
     #if downloaded already, skip download from weibo server, use local file
@@ -150,7 +150,7 @@ for page in range(1, MAX_PAGE):
         #Screen_Name=wb.get('data').get('cards')[0].get('mblog').get('user').get('screen_name')
         Screen_Name=wb.get('data').get('cards')[1].get('mblog').get('user').get('screen_name')#they changed it?
     for l in wb.get('data').get('cards'):
-        print("==================================================================================")
+        print("=================================================================================={}\n".format(l))
         #print Normal Text Message
         OnlyText=''
         if wb.get('data').get('cards')[i].get('card_style'):
@@ -275,7 +275,7 @@ for page in range(1, MAX_PAGE):
     #save dict last in case we were not done the first time and then download again
     save_wb_to_file(wb_dict, FILE_DICT_PRE+str(page))
     page+=1
-    if need_sleep is 1:
+    if need_sleep == 1:
         time.sleep(40)
     else:
         time.sleep(1)
