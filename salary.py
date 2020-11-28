@@ -2,17 +2,64 @@ import csv
 from requests_html import HTMLSession
 from bs4 import BeautifulSoup
 
-session = HTMLSession()
-
-page_num=1
-
-URL="https://s.198704.xyz/202006.htm"
-r=session.get(URL)
-ht=r.text.encode('iso-8859-1').decode('gbk')
-
 my_data=dict()
-soup=BeautifulSoup(ht, "lxml")
-dir(soup)
+#session = HTMLSession()
+#URL="https://s.198704.xyz/202006.htm"
+#r=session.get(URL)
+#ht=r.text.encode('iso-8859-1').decode('gbk')
+#soup=BeautifulSoup(ht, "lxml")
+class SalaySheep():
+    def __init__(self, filename):
+        self.filename=filename 
+
+    def get_info(self):
+        my_data=dict()
+        htmlfile = open(self.filename, 'r', encoding='gbk')
+        htmlhandle = htmlfile.read()
+        soup = BeautifulSoup(htmlhandle, 'lxml')
+        
+        all_table=soup.find_all('table')
+        for table in all_table:
+            all_tr=table.find_all('tr')
+            len_tr = len(all_tr)
+            if len_tr == 3:
+                #print(all_tr[0].text)
+                for i in range(1, (len_tr//2)+1):
+                    all_font=all_tr[i].find_all('font')
+                    all_font1=all_tr[i+(len_tr//2)].find_all('font')
+                    len_font = len(all_font)
+                    for j in range(len_font):
+                        my_data[all_font[j].text]=all_font1[j].text
+                        #print(all_font[j].text, all_font1[j].text,)
+            elif len_tr > 4:
+                for i in range(1, (len_tr//2), 2):
+                    all_font=all_tr[i].find_all('font')
+                    all_font1=all_tr[i+1].find_all('font')
+                    len_font = len(all_font)
+                    for j in range(len_font):
+                        #print(all_font[j].text, all_font1[j].text,)
+                        my_data[all_font[j].text]=all_font1[j].text
+        
+        
+            else:
+                #print(all_tr[0].text)
+                pass
+        return my_data
+
+
+my=SalaySheep("202006.htm")
+d=my.get_info()
+print(d)
+
+exit()
+
+
+
+filename="202006.htm"
+htmlfile = open(filename, 'r', encoding='gbk')
+htmlhandle = htmlfile.read()
+soup = BeautifulSoup(htmlhandle, 'lxml')
+
 all_table=soup.find_all('table')
 for table in all_table:
     all_tr=table.find_all('tr')
