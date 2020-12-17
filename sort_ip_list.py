@@ -3,27 +3,25 @@
 # Version1
 # need to be optimized
 #from __future__ import print_function
-import urllib2
 import time 
 import sys
 import json
+import requests 
+URL = "http://ip-api.com/json/"
+
 def ip_to_country(ip):
-    y = {}
-    x = {}
-    for y in urllib2.urlopen(ip,timeout=1):#on some machine, timeout=1 is a must or it will stop here
-        pass
-    x = json.loads(y)
-#    print x
-    time.sleep(0.5)
-    if "fail" in y:
-	return x["status"]
-    else:
-        return x["country"]
+    #ip=ip.split('\n')[0]
+    r=requests.get(URL+ip)
+    print(r.json())
+    if r.status_code == 200:
+        j=r.json()
+        if j["status"] == "success":
+            return j["country"]
+        else:
+            return '';
 
-
-
-f_ip = open("sort_by_ip.txt", "r+")
-f_cn = open("sort_by_cn.txt", "r+")
+f_ip = open("sort_by_ip.txt", "w+")
+f_cn = open("sort_by_cn.txt", "w+")
 f = open("ip.txt", 'r')
 words = []
 for line in f:
@@ -32,7 +30,7 @@ words.sort()
 for word in words:
     pass
 
-print "=============================================="
+print("==============================================")
 cnt = 0;
 cn_total = []
 i = 0
@@ -51,8 +49,8 @@ for ip, num in list(a.items()):#this is key
 l.sort(reverse=True)
 for num, ip in l:
     ip=ip.strip()
-    print(ip)
-    print(num)
+    #print(ip)
+    #print(num)
     f_ip.write(str(ip))
     i=len(str(ip))
     while i < 20:
@@ -64,11 +62,13 @@ for num, ip in l:
 addr_pre = 'http://ip-api.com/json/'
 #print(a.items())
 for num, ip in l:
-    country = ip_to_country(addr_pre+ip)
+    ip=ip.split("\n")[0]
+    country = ip_to_country(ip)
     if country not in b:
         b[country]=num
     else:
         b[country]+=num
+    time.sleep(2)
 
 for cn,num in list(b.items()):
     m.append((num, cn))
@@ -79,7 +79,9 @@ for num, cn in m:
 #    	f_cn.write(str(cn))
 #    except:
 #    	f_cn.write("Unknown")
-    f_cn.write(cn.encode('utf8'))#some names of country not encode well
+    print(cn)
+    #f_cn.write(cn.encode('utf8'))#some names of country not encode well
+    f_cn.write(cn)#some names of country not encode well
     l=len(cn.encode('utf8'))
     print(cn.encode('utf8'))
     i = l
