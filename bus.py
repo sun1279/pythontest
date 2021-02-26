@@ -10,7 +10,7 @@ def get_bus_list(num, station):
         print(r)
         print(r.json())
         if r.status_code == 200:
-            if type(r.json()) is list:
+            if type(r.json()) is list:#normal-list abnormal-dict
                 return r.json()
             else:
                 if 'status' in r.json().keys():
@@ -47,13 +47,13 @@ def login():
         resu = [{'bus': wb[0]['status']}]
         return json.dumps(resu, ensure_ascii=False)  # 将字典转换为json串, json是字符串
     else:
-    
         for w in wb:
             a=w['current_station_name']+"  "+w['time_to_there']+"\n还有"+w['station_count_remain']+"站\n"
             bus_info+=a
             resu = {'bus': bus_info}
-        #return json.dumps(resu, ensure_ascii=False)  # 将字典转换为json串, json是字符串
-    
+        if len(wb) == 1: #only one on the road
+            return json.dumps(resu, ensure_ascii=False)  # 将字典转换为json串, json是字符串
+            
         tmp=int(wb[1]['station_count_remain'])
         new_station=int(station)-tmp
     
