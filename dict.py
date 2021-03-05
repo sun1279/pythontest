@@ -68,7 +68,9 @@ class Youdao(object):
             auth_sents_part=self.__wb__['auth_sents_part']
             se=list()
             for i in auth_sents_part['sent']:
-                se.append(i['speech'].replace('+',' '))
+                s = i['speech'].replace('+',' ')
+                s = s.replace("%2C", '')
+                se.append(s)
             return se
 
 
@@ -127,7 +129,7 @@ class Youdao(object):
 
 
 
-y=Youdao('break out')
+y=Youdao('descend')
 print(y.getch())
 print(y.geten())
 print(y.getbilng())
