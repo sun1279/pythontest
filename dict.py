@@ -129,13 +129,91 @@ class Youdao(object):
 
 
 
-y=Youdao('descend')
-print(y.getch())
-print(y.geten())
-print(y.getbilng())
-print(y.getrels())
-print(y.getsentence())
-print(y.getphone())
-print(y.getphrase())
-print(y.getsyno())
+y=Youdao('kinship')
+print("中文翻译：")
+s=""
+I = y.getch()
+for  i in I:
+    s+=i
+    s+=' '
+print(s)
+print("英文释义：")
+s=""
+I = y.geten()
+for  i in I:
+    s+=i
+    s+='\n'
+print(s)
+
+print("双语例句：")
+s=''
+I=y.getbilng()
+for i in I:
+    K = i.keys()
+    for k in K:
+        s+=i[k]
+        s+='\n'
+    s+='\n'
+print(s)
+
+print("权威例句：")
+s=""
+I = y.getsentence()
+for  i in I:
+    s+=i
+    s+='\n'
+print(s)
+
+print("详细释义：")
+s=""
+I = y.getrels()
+for i in I:
+    K = i.keys()
+    for k in K:
+        s+=i[k]
+    s+='\n'
+print(s)
+
+print("发音：")
+s=''
+I=y.getphone()
+K = I.keys()
+for k in K:
+    s+=I[k]
+    s+='\n'
+print(s)
+
+
+print("短语：")
+s=""
+I = y.getphrase()
+for i in I:
+    K = i.keys()
+    for k in K:
+        s+=i[k]
+        s+=' '
+    s+='\n'
+print(s)
+
+print("同义词：")
+s=""
+I = y.getsyno()
+s=''
+for i in I:
+    K = i.keys()
+    for k in K:
+        if type(i[k]) is str:
+            s+=i[k]
+            s+=' '
+        if type(i[k]) is list:
+            tmp = i[k]
+            for t in tmp:
+                s+=t
+                s+=' '
+
+print(s)
+
+
+
+#print(y.getsyno())
 #print(y.getmedia())
