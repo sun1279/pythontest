@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Result</title>
+</head>
+<body>
+    <h3>{{username}}查询结果</h3>
+    <hr>
+    <b style="font-size:120%">中文翻译</b>
+    <hr>
+<table border="0">
+    {% for row in syno%}
+    <tr>
+	<td>{{row['pos']}}</td>
+	<td>     </td>
+	<td>{{row['tran']}}</td>
+	<td>     </td>
+	<td>
+{% set ws =row['syno']%}
+{% for r in ws%}
+{{    r }} ,  
+        {% endfor %}
+	</td>
+    </tr>
+        {% endfor %}
+</table>
+
+
+<p><b style="font-size:120%">发音</b></p>
+<hr>
+美音：
+{{ pho['us'] }}
+英音：
+{{ pho['uk'] }}
+	
+
+
+
+<p><b style="font-size:120%">同根词</b></p>
+<hr>
+<table border="0">
+    {% for row in rel%}
+    <tr>
+	<td>{{row['pos']}}</td>
+	<td>     </td>
+	<td>{{row['en']}}</td>
+	<td>     </td>
+	<td>{{row['ch']}}</td>
+    </tr>
+        {% endfor %}
+</table>
+
+
+<p><b style="font-size:120%">双语例句</b></p>
+<hr>
+<table border="0">
+    {% for row in bl%}
+    <tr>
+	<td>{{row['en']}}</td>
+	<td>{{row['cn']}}</td>
+    </tr>
+        {% endfor %}
+</table>
+
+<p><b style="font-size:120%">固定短语</b></p>
+<hr>
+<table border="0">
+        {% for row in phr%}
+    <tr>
+	<td>{{row['en']}}</td>
+	<td>{{row['cn']}}</td>
+    </tr>
+        {% endfor %}
+</table>
+
+
+<p><b style="font-size:120%">权威例句</b></p>
+<hr>
+{% for row in sen%}
+{{row}}<br>
+{% endfor %}
+
+<p><b style="font-size:120%">英文释义</b></p>
+<hr>
+{% for row in ee%}
+{{row}}<br>
+{% endfor %}
+<hr>
+
+
+</body>
+</html>
