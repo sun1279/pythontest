@@ -3,13 +3,24 @@
     <title></title>
 </head>
 <body>
-    <h1 align="center">输入单词</h1>
+    <h1 align="center">输入起始机场及出发日期</h1>
+    <h3 align="center">查询特定日期的机票信息，按照价格排序，日期格式:2021-06-01</h3>
     <h1>
     <form align="center" action="showdict">
         <label></label>
-        <input type="name" name="dep" style="width:240px; height:40px;font-size:32px;">
-        <input type="name" name="arr" style="width:240px; height:40px;font-size:32px;">
-        <input type="name" name="date" style="width:240px; height:40px;font-size:32px;">
+        <input type="name" name="dep" style="width:240px; height:40px;font-size:32px;", value="出发城市">
+        <input type="name" name="arr" style="width:240px; height:40px;font-size:32px;", value="到达城市">
+        <input type="name" name="date" style="width:240px; height:40px;font-size:32px;", value="日期">
+        <input type="submit" value="查询" style="width:100px; height:40px;font-size:26px;">
+    </form>
+    </h1>
+    <h1 align="center">输入起始机场</h1>
+    <h3 align="center">查询最近3个月的机票信息，按照日期排序，只显示当日最低价</h3>
+    <h1>
+    <form align="center" action="showdict1">
+        <label></label>
+        <input type="name" name="dep1" style="width:240px; height:40px;font-size:32px;", value="出发城市">
+        <input type="name" name="arr1" style="width:240px; height:40px;font-size:32px;", value="到达城市">
         <input type="submit" value="查询" style="width:100px; height:40px;font-size:26px;">
     </form>
     </h1>

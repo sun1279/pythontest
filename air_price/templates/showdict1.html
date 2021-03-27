@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Result</title>
+</head>
+<body>
+<h3>{{date}}</h3>
+<table border="0">
+    {% for row in flights%}
+        <tr>
+		<td>{{row['airname']}}</td>
+		<td>{{row['flightNo']}}</td>
+		<td>{{row['dDate']}}</td>
+		<td>{{row['dweek']}}</td>
+		<td> | 价格:</td>
+		<td>{{row['price']}}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

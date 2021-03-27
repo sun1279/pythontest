@@ -120,16 +120,44 @@ def showdict():
 
     return render_template("showdict.html", flights=flights,date=date)
 
+@app.route('/showdict1', methods=['GET'])
+def showdict1():
+    dep = request.args.get('dep1')
+    arr = request.args.get('arr1')
+    DepCity=code_name.get(dep)
+    ArrCity=code_name.get(arr)
+    #y = Youdao(username)
+    #ch = y.getch()
+    #ee = y.geten()
+    #bl = y.getbilng()
+    #rel = y.getrels()
+    #pho = y.getphone()
+    #phr = y.getphrase()
+    #syno = y.getsyno()
+    #print(syno)
+    #sen = y.getsentence()
+#Date="2021-04-11"
+    flights=GetLowPriceList(DepCity, ArrCity)
+
+    return render_template("showdict1.html", flights=flights)
+
+
 @app.route('/', methods=['POST', 'GET'])
 def dict_form():
     if request.method == "POST":
         date = request.form['date']
-        print(username)
-        return redirect(url_for('showdict',
+        if date:
+            return redirect(url_for('showdict',
                                 date=date,
                                 dep=dep,
                                 arr=arr
                                 ))
+        else:
+            return redirect(url_for('showdict1',
+                                dep=dep1,
+                                arr=arr1
+                                ))
+
     return render_template("dict.html")
 
 if __name__ =="__main__":
