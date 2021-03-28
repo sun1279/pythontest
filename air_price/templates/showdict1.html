@@ -8,12 +8,14 @@
 <table border="0">
     {% for row in flights%}
         <tr>
+		{%set url = "https://m.ctrip.com/html5/flight/swift/domestic/" ~ depcode ~ "/" ~ arrcode ~ "/" ~ row['dDate']%}
 		<td>{{row['airname']}}</td>
 		<td>{{row['flightNo']}}</td>
 		<td>{{row['dDate']}}</td>
 		<td>{{row['dweek']}}</td>
 		<td> | 价格:</td>
 		<td>{{row['price']}}</td>
+		<td><a href={{url}} target="_blank">去订票</a>
         </tr>
     {% endfor %}
 </table>

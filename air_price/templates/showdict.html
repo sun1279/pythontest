@@ -5,6 +5,8 @@
 </head>
 <body>
 <h3>{{date}}</h3>
+{%set url = "https://m.ctrip.com/html5/flight/swift/domestic/" ~ flights[0]['mutilstn'][0]['dportinfo']['city'] ~ "/" ~ flights[0]['mutilstn'][0]['aportinfo']['city'] ~ "/" ~ date %}
+
 <table border="0">
     {% for row in flights%}
         <tr>
@@ -20,6 +22,7 @@
 		<td>{{row['mutilstn'][0]['dateinfo']['adate'][-8::]}}</td>
 		<td> | 价格:</td>
 		<td>{{row['policyinfo'][0]['priceinfo'][0]['price']}}</td>
+		<td><a href={{url}} target="_blank">去订票</a>
         </tr>
     {% endfor %}
 </table>

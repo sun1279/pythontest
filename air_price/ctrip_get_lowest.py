@@ -88,15 +88,15 @@ def PrintPriceList(ls):
 '''Get the Lowest price of every day within three months '''
 def GetLowPriceList(dep, arr):
     p={"stype":1,"dCty":dep,"aCty":arr,"flag":'',"start":"","end":"","head":{"cid":"","ctok":"","cver":"1.0","lang":"01","sid":"8888","syscode":"09","auth":'',"extension":[{"name":"aid","value":""},{"name":"sid","value":""},{"name":"protocal","value":"https"}]},"contentType":"json"}
-    serv_id = random.randint(0,6)
-    print(serv_id)
     r=requests.post('https://m.ctrip.com/restapi/flight/html5/swift/getLowestPriceCalendar?', data=json.dumps(p),headers=headers, )
     wb=r.json()
-    ls=wb['prices']
-    return ls
+#    ls=wb['prices']
+    return wb
+
 DepCity=code_name.get("青岛")
 ArrCity=code_name.get("北京")
 Date="2021-04-11"
-ret=GetPriceByDate(DepCity, ArrCity, Date)
+#ret=GetPriceByDate(DepCity, ArrCity, Date)
+ret = GetLowPriceList(DepCity,ArrCity)
 print(ret)
 

@@ -139,7 +139,7 @@ def showdict1():
 #Date="2021-04-11"
     flights=GetLowPriceList(DepCity, ArrCity)
 
-    return render_template("showdict1.html", flights=flights)
+    return render_template("showdict1.html", flights=flights, depcode=DepCity, arrcode=ArrCity)
 
 
 @app.route('/', methods=['POST', 'GET'])
