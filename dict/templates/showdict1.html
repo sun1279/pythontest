@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Result</title>
+</head>
+<body>
+
+{%set url = "http://dict.198704.xyz/showdict?word=" %}
+<h3>未查询到{{username }}，是不是想找</h3>
+<h3>
+<table border="0">
+    {% for row in typo%}
+    <tr>
+	    {%set url = "http://dict.198704.xyz/showdict?word="~row['word'] %}
+	<td><a href={{url}} target="_blank">{{row['word']}}</a>
+	<td>{{row['word']}}</td>
+	<td>{{row['trans']}}</td>
+    </tr>
+        {% endfor %}
+</table>
+</h3>
+
+
+
+</body>
+</html>

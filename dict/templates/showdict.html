@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Result</title>
+</head>
+<body>
+    <h3>{{username}}</h3>
+
+美音：
+{{ pho['us'] }}
+英音：
+{{ pho['uk'] }}<br>
+    <b style="font-size:100%">中文翻译</b>
+<table border="0">
+    {% for row in syno%}
+    <tr>
+	<td>{{row['pos']}}</td>
+	<td>     </td>
+	<td>{{row['tran']}}</td>
+	<td>     </td>
+	<td>
+{% set ws =row['syno']%}
+{% for r in ws%}
+{{    r }} ,  
+        {% endfor %}
+	</td>
+    </tr>
+        {% endfor %}
+</table>
+
+
+	
+
+
+
+<b style="font-size:100%">同根词</b>
+<table border="0">
+    {% if rel%}
+    {% for row in rel%}
+    <tr>
+	<td>{{row['pos']}}</td>
+	<td>     </td>
+	<td>{{row['en']}}</td>
+	<td>     </td>
+	<td>{{row['ch']}}</td>
+    </tr>
+        {% endfor %}
+    {% endif%}
+</table>
+
+
+<b style="font-size:100%">双语例句</b>
+<table border="0">
+    {% if bl%}
+    {% for row in bl%}
+    <tr>
+	<td>{{row['en']}}</td>
+	<td>{{row['cn']}}</td>
+    </tr>
+        {% endfor %}
+    {% endif%}
+</table>
+<b style="font-size:100%">权威例句</b><br>
+{% for row in sen%}
+{{row}}<br>
+{% endfor %}
+
+<b style="font-size:100%">固定短语</b>
+<table border="1">
+    {% if phr%}
+    {%set a = (phr)|length%}
+	{% if (a)>=16 %}
+	{%set a = 16 %}
+	{% endif %}
+	{% for b in range(0,a,2)%}
+        <tr>
+	<td>{{phr[b]['en']}}</td>
+	<td>{{phr[b]['cn']}}</td>
+	{%if (b+1) < a %}
+	<td>{{phr[b+1]['en']}}</td>
+	<td>{{phr[b+1]['cn']}}</td>
+        {% endif %}
+        </tr>
+        {% endfor %}
+     {% endif %}
+</table>
+
+
+
+<b style="font-size:100%">英文释义</b><br>
+{% for row in ee%}
+{{row}}<br>
+{% endfor %}
+
+
+</body>
+</html>
