@@ -139,6 +139,7 @@ class Youdao(object):
 
 
 
+
 y=Youdao('induce;')
 if y.istypo():
     print("FFFFFFFFFFFF");
