@@ -7,7 +7,7 @@ class Youdao(object):
         if ' ' in word:
             word = word.replace(' ', '+')
         self.__word__ = word
-        URL='http://dict.youdao.com/jsonapi?jsonversion=2&q={word}&keyfrom=deskdict.main&dogVersion=1.0&dogui=json&client=deskdict&id=9b19d285dd7f26ce5&vendor=webdict_default&in=YoudaoDict_webdict_default&appVer=8.9.6.0&appZengqiang=0&abTest=&model=SANGFOR&screen=1920*1080&le=auto&dicts=%7B%22count%22%3A21%2C%22dicts%22%3A%5B%5B%22oxfordAdvance%22%2C%22oxford%22%2C%22splongman%22%2C%22longman%22%2C%22webster%22%2C%22collins%22%2C%22collins_part%22%2C%22ec21%22%2C%22ce_new%22%2C%22hh%22%2C%22newhh%22%2C%22newcenturyjc%22%5D%2C%5B%22web_search%22%5D%2C%5B%22web_trans%22%5D%2C%5B%22special%22%5D%2C%5B%22ee%22%5D%2C%5B%22phrs%22%5D%2C%5B%22syno%22%5D%2C%5B%22rel_word%22%5D%2C%5B%22etym%22%5D%2C%5B%22typos%22%5D%2C%5B%22blng_sents_part%22%2C%22media_sents_part%22%2C%22auth_sents_part%22%5D%2C%5B%22fanyi%22%5D%5D%7D&LTH=47'.format(word=self.__word__)
+        URL='http://dict.youdao.com/jsonapi?jsonversion=2&q={word}&keyfrom=deskdict.main&dogVersion=1.0&dogui=json&client=deskdict&id=9b19d285dd7f26ce5&vendor=webdict_default&in=YoudaoDict_webdict_default&appVer=8.9.6.0&appZengqiang=1&abTest=&model=SANGFOR&screen=1920*1080&le=auto&dicts=%7B%22count%22%3A21%2C%22dicts%22%3A%5B%5B%22oxfordAdvance%22%2C%22oxford%22%2C%22splongman%22%2C%22longman%22%2C%22webster%22%2C%22collins%22%2C%22collins_part%22%2C%22ec21%22%2C%22ce_new%22%2C%22hh%22%2C%22newhh%22%2C%22newcenturyjc%22%5D%2C%5B%22web_search%22%5D%2C%5B%22web_trans%22%5D%2C%5B%22special%22%5D%2C%5B%22ee%22%5D%2C%5B%22phrs%22%5D%2C%5B%22syno%22%5D%2C%5B%22rel_word%22%5D%2C%5B%22etym%22%5D%2C%5B%22typos%22%5D%2C%5B%22blng_sents_part%22%2C%22media_sents_part%22%2C%22auth_sents_part%22%5D%2C%5B%22fanyi%22%5D%5D%7D&LTH=47'.format(word=self.__word__)
         r=requests.get(URL)
         self.__wb__=r.json()
         print(self.__wb__)
@@ -126,11 +126,25 @@ class Youdao(object):
                 d['source'] = m['snippets']['snippet'][0]['source']
                 media.append(d)
             return media
+    def istypo(self):
+        if 'typos' in self.__wb__.keys():
+            return 1
+        else:
+            return 0
+
+    def gettypos(self):
+        if self.istypo():
+            return self.__wb__['typos']['typo']
 
 
 
 
-y=Youdao('ijfasd;')
+y=Youdao('induce;')
+if y.istypo():
+    print("FFFFFFFFFFFF");
+    print(y.gettypos())
+else:
+    print("ssssssssssss");
 
 I=y.getphone()
 s='发音：  美音:{}  英音:{}'.format(I['us'], I['uk'])
@@ -185,15 +199,16 @@ print(s)
 print("短语：")
 s=""
 I = y.getphrase()
-l = len(I)
-if l > 10:
-    l = 10
-for i in range(l):
-    s+=I[i]['en']
-    s+=' '
-    s+=I[i]['cn']
-    s+='\n'
-print(s)
+if I:
+    l = len(I)
+    if l > 10:
+        l = 10
+    for i in range(l):
+        s+=I[i]['en']
+        s+=' '
+        s+=I[i]['cn']
+        s+='\n'
+    print(s)
 
 #print("同义词：")
 #s=""
