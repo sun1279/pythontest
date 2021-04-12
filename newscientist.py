@@ -1,5 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
+import time
+import random
 
 URL="https://www.newscientist.com/article/mg25033291-800-why-rescuing-the-climate-and-saving-biodiversity-go-hand-in-hand/"
 URL='https://www.newscientist.com'
@@ -28,24 +30,31 @@ for d in data:
         urls.append(URL+d['href'])
 
 urls=set(urls)
+urls=list(urls)
 
-data=soup.find_all('h1',{"class":"article__title"})
-title=data[0].text
-
-data=soup.find_all('p',{"class":"article__strap"})
-subtitle=data[0].text
-
-text=[]
-data=soup.find_all("div",{"class":"article__content zephr-article-content"})
-for d in data:
-    e=d.find_all("p", {"class":None})
-    for i in e:
-        if "Advertisement" not in i.text:
-            text.append(i.text)
-
-
-
-for t in text:
-    print(t)
+URL1=random.sample(urls, 1)[0]
+print(URL1)
+r=requests.get(URL1, headers=headers)
+if r.status_code == 200:
+    soup = BeautifulSoup(r.content, 'html.parser')
+    
+    data=soup.find_all('h1',{"class":"article__title"})
+    title=data[0].text
+    
+    data=soup.find_all('p',{"class":"article__strap"})
+    subtitle=data[0].text
+    
+    text=[]
+    data=soup.find_all("div",{"class":"article__content zephr-article-content"})
+    for d in data:
+        e=d.find_all("p", {"class":None})
+        for i in e:
+            if "Advertisement" not in i.text:
+                text.append(i.text)
+    
+    
+    
+    for t in text:
+        print(t)
 
 

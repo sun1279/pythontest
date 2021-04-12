@@ -1,5 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
+import random
+import time
 URL="https://www.economist.com/business/2021/04/08/chinas-rulers-want-more-control-of-big-tech"
 
 EXCLUDE=["https://www.scientificamerican.com/section/opinion/"]
@@ -18,7 +20,13 @@ urls=[]
 for d in data:
     urls.append(URL+d['href'])
 
-r=requests.get(URL, headers=headers)
+for url in urls:
+    print(url)
+
+URL1=random.sample(urls, 1)[0]
+
+time.sleep(2)
+r=requests.get(URL1, headers=headers)
 
 soup = BeautifulSoup(r.content, 'html.parser')
 
