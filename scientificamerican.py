@@ -67,11 +67,11 @@ class SciAme(object):
         self.__article_info__['text'] = text
         return self.__article_info__
 
-mySciAme = SciAme()
-info=mySciAme.get_article()
-print(info['title'])
-print(info['subtitle'])
-print(info['text'])
+#mySciAme = SciAme()
+#info=mySciAme.get_article()
+#print(info['title'])
+#print(info['subtitle'])
+#print(info['text'])
 
 #app = Flask(__name__)
 #
@@ -79,6 +79,6 @@ print(info['text'])
 #def dict_form():
 #    return render_template("dict.html", title=title,subtitle=subtitle, text=text)
 #
-#if __name__ =="__main__":
-#    app.run(debug=True, port=39003, host='0.0.0.0')
-#
+if __name__ =="__main__":
+    app.run(debug=True, port=39003, host='0.0.0.0')
+
